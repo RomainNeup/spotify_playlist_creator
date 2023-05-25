@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
 export default function H3({ children, className }: TitleProps): ReactElement {

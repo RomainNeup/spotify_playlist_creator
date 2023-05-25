@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import Footer from './Footer';
 import Header from './Header';
 import { useSpotifyContext } from '../../utils/SpotifyContext';

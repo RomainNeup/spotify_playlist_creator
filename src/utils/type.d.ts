@@ -4,7 +4,7 @@ interface Playlist {
 }
 
 interface SpotifyPlaylist {
-    id?: string;
+    id: string;
     name: string;
     default?: boolean;
 }

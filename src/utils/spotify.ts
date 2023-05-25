@@ -14,10 +14,6 @@ export function getLoginLink() {
         })
 }
 
-export function generatePlaylist(playlists: [], top: {}, recoLimit: number) {
-
-}
-
 export function getPlaylistTracks(spotify: SpotifyWebApi.SpotifyWebApiJs, playlistId: string, offset = 0): Promise<SpotifyApi.PlaylistTrackObject[]> {
     return spotify.getPlaylistTracks(playlistId, { limit: 100, offset })
         .then((res) => {

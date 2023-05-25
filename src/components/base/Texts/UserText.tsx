@@ -1,5 +1,4 @@
-import React, { FormEvent, ReactElement, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { FormEvent, ReactElement, useState } from 'react';
 import clsx from 'clsx';
 import Icon from '../Icons/Icon';
 import P from './P';
@@ -14,7 +13,6 @@ export default function UserText({
   username,
   color = 'primary',
 }: UserTextProps): ReactElement {
-  const { t } = useTranslation('post');
   const [editedText, setEditedText] = useState<string | null>(null);
 
   const handleEditUserText = (event: FormEvent) => {
@@ -38,7 +36,7 @@ export default function UserText({
       <div className={classes}>
         <form onSubmit={handleEditUserText} className="flex">
           <Input
-            placeholder={t('comment.add')}
+            placeholder={"Edit your message"}
             border={false}
             onChange={(e) => setEditedText(e.target.value)}
             value={editedText}

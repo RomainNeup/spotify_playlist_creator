@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Input from "../components/base/Inputs/Input";
 import Button from "../components/base/Buttons/Button";
 import H1 from "../components/base/Titles/H1";
@@ -19,8 +19,9 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
     const [reco, setReco] = useState<number>(0);
     const handleCreationChange = (index: number, key: string, value: string) => {
         const newCreation = [...selectedPlaylists];
+        // @ts-ignore
         newCreation[index][key] = value;
-        setSelectedPlaylists((old) => newCreation);
+        setSelectedPlaylists(newCreation);
     }
 
     return (
@@ -55,7 +56,7 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
                                 <Input
                                     type='select'
                                     className="w-full"
-                                    options={playlists.map(({ name, id }) => ({ value: id, label: name, default: false })).concat({ value: "", label: "Other 🔍", default: true })}
+                                    options={[...playlists.map(({ name, id }) => ({ value: id, label: name, default: false })), { value: "", label: "Other 🔍", default: true }]}
                                     label="Playlist"
                                     onChange={(elem) => handleCreationChange(index, "id", elem.target.value)}
                                     value={value.id}

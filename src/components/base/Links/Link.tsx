@@ -1,5 +1,4 @@
-import React, { ReactElement } from 'react';
-import { Link as ReactLink } from 'react-router-dom';
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
 export default function Link({ children, to, className }: LinkProps): ReactElement {
@@ -18,12 +17,12 @@ export default function Link({ children, to, className }: LinkProps): ReactEleme
   );
   return (
     <div>
-      <ReactLink
+      <a
         className={componentClass}
-        to={to}
+        href={to}
       >
         {children}
-      </ReactLink>
+      </a>
     </div>
   );
 }

@@ -1,8 +1,7 @@
-import React, {
+import {
   ReactElement, useEffect, useRef, useState,
 } from 'react';
 import clsx from 'clsx';
-import { Link as ReactLink } from 'react-router-dom';
 import Icon from '../Icons/Icon';
 import Image from '../Images/Image';
 
@@ -33,15 +32,15 @@ function DropdownItem({
     case 'link':
       if (to) {
         return (
-          <ReactLink
-            to={disabled ? '#' : to}
+          <a
+            href={disabled ? '#' : to}
             className={buttonClass}
             onClick={onClick}
           >
             {icon && <Icon name={icon} className="mr-2" />}
             {image && <Image src={image} alt={id} className="mr-2 p-1 h-6 w-6 inline" background="none" />}
             {text}
-          </ReactLink>
+          </a>
         );
       }
       break;
