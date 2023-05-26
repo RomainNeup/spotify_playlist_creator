@@ -74,10 +74,10 @@ export default function PlaylistCreator() {
         spotify.getMe().then((user) => {
             if (!user) return;
             spotify.createPlaylist(user.id, {
-                name: generation.title || "Generated playlist",
+                name: generation.title,
                 description: generation.description || "",
-                public: true,
-                collaborative: false,
+                public: generation.public,
+                collaborative: generation.collaborative,
             }).then((playlist) => {
                 const promises = [];
 

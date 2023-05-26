@@ -3,9 +3,10 @@ import Input from "../components/base/Inputs/Input";
 import Button from "../components/base/Buttons/Button";
 import H1 from "../components/base/Titles/H1";
 import H2 from "../components/base/Titles/H2";
+import Checkbox from "../components/base/Inputs/Checkbox";
 
 export default function Creation({ playlists, handleGeneration }: { playlists: SpotifyPlaylist[], handleGeneration: (final: PlaylistCreation) => void }) {
-    const [title, setTitle] = useState<string>("");
+    const [title, setTitle] = useState<string>("Generated playlist " + new Date().toLocaleDateString());
     const [description, setDescription] = useState<string>("");
     const [selectedPlaylists, setSelectedPlaylists] = useState<{
         id: string,
@@ -17,6 +18,8 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
         reco: number
     }>({ limit: 0, reco: 0 });
     const [reco, setReco] = useState<number>(0);
+    const [collaborative, setCollaborative] = useState<boolean>(false);
+    const [publicPlaylist, setPublicPlaylist] = useState<boolean>(true);
     const handleCreationChange = (index: number, key: string, value: string) => {
         const newCreation = [...selectedPlaylists];
         // @ts-ignore
@@ -28,8 +31,8 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
         <div className="flex flex-col space-y-4 w-full max-w-5xl relative">
             <H1 className="mb-4">Create your playlist</H1>
             <div className="py-4 space-y-4">
-                <H2 className="pt-3">First select playlist name</H2>
-                <div className="flex space-x-4 items-center">
+                <H2 className="pt-3">First select new playlist informations</H2>
+                <div className="flex space-x-4 items-start">
                     <Input
                         className="w-full"
                         type="text"
@@ -45,6 +48,11 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
                         onChange={(elem) => setDescription(elem.target.value)}
                         value={description}
                     />
+                    <div>
+                        <label>Playlist privacy</label>
+                        <Checkbox label="Public" className="mt-2" checked={publicPlaylist} onChange={() => setPublicPlaylist(old => !old)} />
+                        <Checkbox label="Collaborative" checked={collaborative} onChange={() => setCollaborative(old => !old)} />
+                    </div>
                 </div>
             </div>
             <div className="py-4 space-y-4">
@@ -137,7 +145,9 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
                         description,
                         title,
                         top: topSongs,
-                        playlists: selectedPlaylists
+                        playlists: selectedPlaylists,
+                        collaborative,
+                        public: publicPlaylist
                     })} fullWidth plain>
                         Validate {false && "⏳"}
                     </Button>
@@ -147,6 +157,8 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
                         setSelectedPlaylists([]);
                         setReco(0);
                         setTopSongs({ limit: 0, reco: 0 });
+                        setCollaborative(false);
+                        setPublicPlaylist(false);
                     }} fullWidth>
                         Dismiss
                     </Button>

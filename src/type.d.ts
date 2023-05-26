@@ -7,5 +7,7 @@ interface PlaylistCreation {
         limit: number,
         reco: number
     }[],
-    allReco: number
+    allReco: number,
+    collaborative: boolean,
+    public: boolean,
 }
