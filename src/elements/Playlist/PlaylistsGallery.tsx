@@ -19,12 +19,14 @@ export default function PlaylistsGallery({ allReco, playlists }: {
                     </div>
                 </div>
             ))}
-            <div>
+            {
+                !!allReco.length && <div>
                 <H2 className="pt-3">All recommendations</H2>
                 <div className="grid gap-2 py-4">
                     {<Playlist tracks={allReco} />}
                 </div>
             </div>
+            }
         </div>
     )
 }

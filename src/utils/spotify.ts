@@ -55,3 +55,71 @@ export function getTopTrack(spotify: SpotifyWebApi.SpotifyWebApiJs, limit = 10) 
         limit: limit
     }).then(a => a.items) : Promise.resolve([]);
 }
+
+export function generatePlaylist(spotify: SpotifyWebApi.SpotifyWebApiJs, playlists: SpotifyPlaylist[], final: PlaylistCreation) {
+    const promises = [];
+    if (!spotify) return Promise.resolve({ allReco: [], playlists: [] });
+    promises.push(
+        getTopTrack(spotify, final.top.limit)
+            .then(tracks => getRecommendations(spotify, getXRandom<SpotifyApi.TrackObjectSimplified>(tracks, 5).map(a => a.id), final.top.reco)
+                .then(recommendations => ({
+                    playlist: {
+                        id: "top",
+                        name: "Top ⭐️"
+                    } as SpotifyPlaylist,
+                    tracks: tracks,
+                    recommendations
+                }))
+            )
+    )
+    for (let playlist of final.playlists) {
+        promises.push(
+            getPlaylistTracks(spotify, playlist.id)
+                .then((tracks) => getXRandom<SpotifyApi.PlaylistTrackObject>(tracks, playlist.limit))
+                .then((tracks) => getRecommendations(spotify, getXRandom<SpotifyApi.PlaylistTrackObject>(tracks, 5).map(a => a.track.id), playlist.reco)
+                    .then(recommendations => ({
+                        playlist: playlists.find(a => a.id === playlist.id),
+                        tracks: tracks.map(a => a.track as SpotifyApi.TrackObjectSimplified),
+                        recommendations
+                    }))
+                )
+        );
+    }
+
+    return Promise.all(promises).then((tracks) =>
+        getRandomReco(spotify, tracks.map(a => (
+            a ? [
+                ...a.tracks.map((a): string => a.id),
+                ...a.recommendations.map(a => a.id)
+            ] : []
+        )).flat(), final.allReco)
+            .then(allReco => ({
+                allReco,
+                playlists: tracks
+            }))
+    );
+}
+
+export function createPlaylist(spotify: SpotifyWebApi.SpotifyWebApiJs, generation: PlaylistGeneration) {
+    const tracksUri = generation.playlists.map(a => [
+        ...a.recommendations.map(a => a.uri),
+        ...a.tracks.map(a => a.uri)
+    ]).flat().concat(generation?.allReco.map(a => a.uri));
+
+    return spotify.getMe().then((user) => {
+        if (!user) return;
+        return spotify.createPlaylist(user.id, {
+            name: generation.title,
+            description: generation.description || "",
+            public: generation.public,
+            collaborative: generation.collaborative,
+        }).then((playlist) => {
+            const promises = [];
+
+            for (let i = 0; i < tracksUri.length; i += 100) {
+                promises.push(spotify.addTracksToPlaylist(playlist.id, tracksUri.slice(i, i + 100)))
+            }
+            return Promise.all(promises);
+        });
+    });
+}
