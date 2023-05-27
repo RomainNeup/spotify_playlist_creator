@@ -1,11 +1,14 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Spotify } from 'react-spotify-embed';
+import { useSpotifyContext } from '../../utils/SpotifyContext';
+import Song from './Song';
 
 export default function Playlist({
   className,
   tracks
 }: PlaylistProps): ReactElement {
+  const spotify = useSpotifyContext();
+  const [trackDetails, setTrackDetails] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const componentClass = clsx(
     className,
     [
@@ -17,6 +20,19 @@ export default function Playlist({
     ]
   );
 
+  const getSongDetails = () => {
+    console.log(tracks);
+    spotify?.getTracks(tracks?.map(track => track.id) || [])
+      .then((tracks) => {
+        setTrackDetails(tracks.tracks);
+      })
+  }
+
+  useEffect(() => {
+    if (tracks.length)
+      getSongDetails();
+  }, [tracks]);
+
   if (!tracks)
     return (<></>);
 
@@ -24,9 +40,13 @@ export default function Playlist({
     <div
       className={componentClass}
     >
-      {tracks.map((track, index) => (
-        <div className="w-1/2 px-1">
-          <Spotify link={"https://open.spotify.com/track/" + track.id} key={"playlist_" + index} wide={true} />
+      {trackDetails.map((track, index) => (
+        <div className="w-full px-1" key={`track_${index}`}>
+          <Song
+            image={track.album.images[0].url}
+            name={track.name} id={track.id}
+            artist={track.artists[0].name}
+          />
         </div>
       ))}
     </div>
