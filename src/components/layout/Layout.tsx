@@ -19,12 +19,14 @@ export default function Layout({ children }: LayoutProps): ReactElement {
   }, [spotify]);
 
   return (
-    <div className="flex flex-col p-8 space-y-16 items-center">
+    <div className="flex flex-col p-8 space-y-16 items-center min-h-screen">
       <Header />
       {
         logged ?
           children
-          : <Button to={getLoginLink()}>Connexion</Button>
+          : <div className="flex h-full items-center grow">
+            <Button to={getLoginLink()}>Connexion avec Spotify</Button>
+          </div>
       }
       <Footer />
     </div>
