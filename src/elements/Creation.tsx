@@ -4,8 +4,12 @@ import Button from "../components/base/Buttons/Button";
 import H1 from "../components/base/Titles/H1";
 import H2 from "../components/base/Titles/H2";
 import Checkbox from "../components/base/Inputs/Checkbox";
+import { generatePlaylist } from "../utils/spotify";
+import { usePlaylistContext } from "../utils/PlaylistContext";
+import { useSpotifyContext } from "../utils/SpotifyContext";
+import Spinner from "../components/base/Spinners/Spinner";
 
-export default function Creation({ playlists, handleGeneration }: { playlists: SpotifyPlaylist[], handleGeneration: (final: PlaylistCreation) => void }) {
+export default function Creation({ playlists }: { playlists: SpotifyPlaylist[] }) {
     const [title, setTitle] = useState<string>("Generated playlist " + new Date().toLocaleDateString());
     const [description, setDescription] = useState<string>("");
     const [selectedPlaylists, setSelectedPlaylists] = useState<{
@@ -20,11 +24,35 @@ export default function Creation({ playlists, handleGeneration }: { playlists: S
     const [reco, setReco] = useState<number>(0);
     const [collaborative, setCollaborative] = useState<boolean>(false);
     const [publicPlaylist, setPublicPlaylist] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const playlistContext = usePlaylistContext();
+    const spotify = useSpotifyContext();
+
     const handleCreationChange = (index: number, key: string, value: string) => {
         const newCreation = [...selectedPlaylists];
         // @ts-ignore
         newCreation[index][key] = value;
         setSelectedPlaylists(newCreation);
+    }
+
+    const handleGeneration = (final: PlaylistCreation) => {
+        if (!spotify) return;
+        setLoading(true);
+        generatePlaylist(spotify, playlists, final)
+        .then((res) => {
+            setLoading(false);
+            playlistContext?.setGeneratedPlaylist({ ...res, title, description, public: publicPlaylist, collaborative });
+        })
+        .catch(() => setLoading(false));
+    };
+
+    if (loading) {
+        return (
+            <div className="flex h-full items-center grow">
+                <Spinner />
+            </div>
+        )
     }
 
     return (
