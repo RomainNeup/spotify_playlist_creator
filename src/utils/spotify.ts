@@ -33,6 +33,8 @@ export function getPlaylistTracks(spotify: SpotifyWebApi.SpotifyWebApiJs, playli
 export function getRecommendations(spotify: SpotifyWebApi.SpotifyWebApiJs, tracks: string[], limit = 10) {
     if (!limit || !tracks.length)
         return Promise.resolve([]);
+    if (tracks.length > 5)
+        tracks = getXRandom<string>(tracks, 5);
     return spotify.getRecommendations({
         seed_tracks: tracks,
         market: "FR",

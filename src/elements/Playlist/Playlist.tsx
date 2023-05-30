@@ -41,7 +41,7 @@ export default function Playlist({
       className={componentClass}
     >
       {trackDetails.map((track, index) => (
-        <div className="w-full px-1" key={`track_${index}`}>
+        <div className="w-full" key={`track_${index}`}>
           <Song
             image={track.album.images[0].url}
             name={track.name} id={track.id}

@@ -33,16 +33,20 @@ export default function PlaylistCreator() {
 
     if (playlistContext?.generatedPlaylist) {
         return (
-            <div className="flex flex-col space-y-4 w-full max-w-6xl relative">
-                <H1>{playlistContext.generatedPlaylist.title || "Generated playlist"}</H1>
-                <H4>{playlistContext.generatedPlaylist.description}</H4>
-                <div className="absolute right-0 flex space-x-2">
-                    <Button onClick={() => playlistContext.setGeneratedPlaylist(null)}>
-                        Back to generation
-                    </Button>
-                    {/* <Button onClick={() => handleGeneration(generation!)} plain>
+            <div className="flex flex-col space-y-4 w-full max-w-6xl">
+                <div className="flex justify-between">
+                    <div>
+                        <H1>{playlistContext.generatedPlaylist.title || "Generated playlist"}</H1>
+                        <H4>{playlistContext.generatedPlaylist.description}</H4>
+                    </div>
+                    <div className="flex space-x-2">
+                        <Button onClick={() => playlistContext.setGeneratedPlaylist(null)} plain>
+                            Back to generation
+                        </Button>
+                        {/* <Button onClick={() => handleGeneration(generation!)} plain>
                         Regenerate {loading && "⏳"}
                     </Button> */}
+                    </div>
                 </div>
                 <PlaylistsGallery playlists={playlistContext.generatedPlaylist.playlists} allReco={playlistContext.generatedPlaylist.allReco} />
                 <div className="flex space-x-2 justify-end">
