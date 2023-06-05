@@ -5,19 +5,24 @@ import Song from './Song';
 
 export default function Playlist({
   className,
-  tracks
+  tracks,
+  columns = 1
 }: PlaylistProps): ReactElement {
   const spotify = useSpotifyContext();
   const [trackDetails, setTrackDetails] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const componentClass = clsx(
     className,
     [
-      "flex",
+      "grid",
       "w-full",
-      "flex-wrap",
       "h-fit",
-      "gap-y-2"
-    ]
+      "gap-2",
+    ],
+    {
+      "grid-cols-1": columns === 1,
+      "grid-cols-2": columns === 2,
+      "grid-cols-4": columns === 4,
+    }
   );
 
   const getSongDetails = () => {
@@ -46,6 +51,7 @@ export default function Playlist({
             image={track.album.images[0].url}
             name={track.name} id={track.id}
             artist={track.artists[0].name}
+            url={track.preview_url}
           />
         </div>
       ))}

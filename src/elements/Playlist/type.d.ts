@@ -1,5 +1,6 @@
 interface PlaylistProps {
   className?: string;
+  columns?: number;
   tracks: SpotifyApi.TrackObjectSimplified[];
 }
 
@@ -8,4 +9,5 @@ interface SongProps {
   name: string;
   id: string;
   artist: string;
+  url: string;
 }

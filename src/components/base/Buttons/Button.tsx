@@ -37,11 +37,11 @@ export default function Button({
       'bg-secondary text-basic hover:text-secondary': color === 'secondary' && plain,
       'bg-basic text-primary hover:text-basic': color === 'basic' && plain,
 
-      'text-primary hover:bg-primary/50 hover:text-basic': (color === 'primary' || !color) && !plain && !border,
-      'text-secondary hover:bg-secondary/50 hover:text-basic': color === 'secondary' && !plain && !border,
-      'text-basic hover:bg-basic/50 hover:text-primary': color === 'basic' && !plain && !border,
+      'text-primary hover:bg-primary/50 hover:text-basic fill-primary hover:fill-basic': (color === 'primary' || !color) && !plain && !border,
+      'text-secondary hover:bg-secondary/50 hover:text-basic fill-secondary hover:fill-basic': color === 'secondary' && !plain && !border,
+      'text-basic hover:bg-basic/50 hover:text-primary fill-basic hover:fill-primary': color === 'basic' && !plain && !border,
 
-      'text-primary hover:bg-primary hover:text-basic': (color === 'primary' || !color) && !plain && border,
+      'text-primary hover:bg-primary hover:text-basic fill-primary hover:fill-basic': (color === 'primary' || !color) && !plain && border,
       'text-secondary hover:bg-secondary hover:text-basic': color === 'secondary' && !plain && border,
       'text-basic hover:bg-basic hover:text-primary': color === 'basic' && !plain && border,
 

@@ -40,7 +40,7 @@ export default function PlaylistsGallery({ allReco, playlists }: {
     return (
         <div>
             {playlists.map(({ playlist, tracks, recommendations }) => (
-                <div>
+                <div key={`playlist_${playlist?.id}`}>
                     {playlist?.name && (!!tracks.length || !!recommendations.length) &&
                         <div className="flex justify-between pt-3">
                             <H2>{playlist.name}</H2>
@@ -59,7 +59,7 @@ export default function PlaylistsGallery({ allReco, playlists }: {
                 !!allReco.length && <div>
                     <H2 className="pt-3">All recommendations</H2>
                     <div className="grid gap-2 py-4">
-                        {<Playlist tracks={allReco} />}
+                        {<Playlist tracks={allReco} columns={2} />}
                     </div>
                 </div>
             }
