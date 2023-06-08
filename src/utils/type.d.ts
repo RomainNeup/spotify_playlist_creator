@@ -7,4 +7,6 @@ interface SpotifyPlaylist {
     id: string;
     name: string;
     default?: boolean;
+    limit?: number;
+    reco?: number;
 }

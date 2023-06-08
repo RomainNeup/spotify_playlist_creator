@@ -40,11 +40,21 @@ export default function Creation({ playlists }: { playlists: SpotifyPlaylist[] }
         if (!spotify) return;
         setLoading(true);
         generatePlaylist(spotify, playlists, final)
-        .then((res) => {
-            setLoading(false);
-            playlistContext?.setGeneratedPlaylist({ ...res, title, description, public: publicPlaylist, collaborative });
-        })
-        .catch(() => setLoading(false));
+            .then((res) => {
+                setLoading(false);
+                playlistContext?.setGeneratedPlaylist({
+                    playlists: res.playlists.map(a => ({...a, playlist: {
+                        ...a.playlist,
+                        name: a.playlist.name || ""
+                    }})),
+                    allReco: res.allReco,
+                    title,
+                    description,
+                    public: publicPlaylist,
+                    collaborative
+                });
+            })
+            .catch(() => setLoading(false));
     };
 
     if (loading) {

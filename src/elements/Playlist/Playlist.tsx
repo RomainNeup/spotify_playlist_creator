@@ -51,7 +51,8 @@ export default function Playlist({
             image={track.album.images[0].url}
             name={track.name} id={track.id}
             artist={track.artists[0].name}
-            url={track.preview_url}
+            url={track.external_urls.spotify}
+            preview={track.preview_url}
           />
         </div>
       ))}

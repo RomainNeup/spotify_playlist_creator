@@ -67,7 +67,9 @@ export function generatePlaylist(spotify: SpotifyWebApi.SpotifyWebApiJs, playlis
                 .then(recommendations => ({
                     playlist: {
                         id: "top",
-                        name: "Top ⭐️"
+                        name: "Top ⭐️",
+                        limit: final.top.limit,
+                        reco: final.top.reco
                     } as SpotifyPlaylist,
                     tracks: tracks,
                     recommendations
@@ -80,7 +82,10 @@ export function generatePlaylist(spotify: SpotifyWebApi.SpotifyWebApiJs, playlis
                 .then((tracks) => getXRandom<SpotifyApi.PlaylistTrackObject>(tracks, playlist.limit))
                 .then((tracks) => getRecommendations(spotify, getXRandom<SpotifyApi.PlaylistTrackObject>(tracks, 5).map(a => a.track.id), playlist.reco)
                     .then(recommendations => ({
-                        playlist: playlists.find(a => a.id === playlist.id),
+                        playlist: {
+                            ...playlists.find(a => a.id === playlist.id),
+                            ...playlist
+                        },
                         tracks: tracks.map(a => a.track as SpotifyApi.TrackObjectSimplified),
                         recommendations
                     }))

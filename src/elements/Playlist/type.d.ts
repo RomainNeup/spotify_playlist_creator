@@ -9,5 +9,6 @@ interface SongProps {
   name: string;
   id: string;
   artist: string;
+  preview: string;
   url: string;
 }

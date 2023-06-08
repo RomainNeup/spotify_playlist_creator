@@ -2,8 +2,10 @@ import { useRef, useState } from "react";
 import Button from "../../components/base/Buttons/Button";
 import Image from "../../components/base/Images/Image";
 import { usePlaylistContext } from "../../utils/PlaylistContext";
+import spotifyLogo from "../../assets/Spotify_Icon_RGB_Green.png";
+import Link from "../../components/base/Links/Link";
 
-export default function Song({ image, name, id, artist, url }: SongProps) {
+export default function Song({ image, name, id, artist, preview, url }: SongProps) {
     const playlistContext = usePlaylistContext();
     const [playing, setPlaying] = useState<boolean>(false);
 
@@ -39,11 +41,13 @@ export default function Song({ image, name, id, artist, url }: SongProps) {
             <div className="w-full truncate">
                 <div>{name}</div>
                 <div>{artist}</div>
-                <audio src={url} ref={audioRef} />
+                <audio src={preview} ref={audioRef} />
             </div>
             <div className="flex shrink-0">
-                
-                <Button onClick={() => playlistContext?.removeSong(id)}>
+                <Link to={url} className="py-3" newTab>
+                    <Image src={spotifyLogo} alt="Spotify logo" className="h-6 w-6" background="none" />
+                </Link>
+                <Button onClick={() => playlistContext?.removeSong(id)} border={false}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-basic hover:text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path
                             strokeLinecap="round"

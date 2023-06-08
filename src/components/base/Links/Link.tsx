@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import clsx from 'clsx';
 
-export default function Link({ children, to, className }: LinkProps): ReactElement {
+export default function Link({ children, to, className, newTab = false }: LinkProps): ReactElement {
   const componentClass = clsx(
     className,
     [
@@ -20,6 +20,7 @@ export default function Link({ children, to, className }: LinkProps): ReactEleme
       <a
         className={componentClass}
         href={to}
+        target={newTab ? "_blank" : "_self"}
       >
         {children}
       </a>
